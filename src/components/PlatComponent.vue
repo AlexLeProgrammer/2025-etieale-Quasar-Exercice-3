@@ -34,6 +34,7 @@
       color="blue"
       flat>Modifier</q-btn>
     <q-btn
+      @click.stop="confirmerSuppression"
       icon="delete"
       color="red"
       flat>Supprimer</q-btn>
@@ -41,7 +42,11 @@
 
   <q-dialog
     v-model="afficherFormPlat">
-    <FormPlat action="modifier" />
+    <FormPlat
+      @close="afficherFormPlat = false"
+      action="modifier"
+      :plat-a-modifier="plat"
+    />
   </q-dialog>
 </q-card>
 </template>
@@ -49,9 +54,22 @@
 <script setup>
 import { ref } from 'vue'
 import FormPlat from 'components/FormPlat.vue'
+import { usePlatsStore } from 'stores/store-plats.js'
+import { Dialog } from 'quasar'
 
+const confirmerSuppression = (id) => {
+  Dialog.create({
+    title: 'Suppression',
+    message: 'Êtes-vous sûr de vouloir supprimer ce plat ?',
+    cancel: true,
+    persistent: true
+  }).onOk(() => {
+    store.supprimerPlat(plat.id)
+  })
+}
 const afficherFormPlat = ref(false)
 const { plat } = defineProps(['plat'])
+const store = usePlatsStore()
 </script>
 
 <style lang="scss">

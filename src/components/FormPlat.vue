@@ -1,14 +1,17 @@
 <template>
 <q-card class="form-card">
+  <q-form
+    @submit="formSubmit"
+  >
   <q-card-section>
     <div class="text-h6 heading">{{ action }} Plat</div>
   </q-card-section>
-
   <q-card-section>
 
     <div class="row q-mb-md">
       <q-input
         filled
+        maxlength="20"
         v-model="plat.nom"
         label="Nom (Burger)"
         class="col" />
@@ -17,6 +20,7 @@
     <div class="row q-mb-md">
       <q-input
         filled
+        maxlength="155"
         v-model="plat.description"
         label="Description"
         type="textarea"
@@ -57,15 +61,26 @@
     <q-btn
       label="Sauver"
       color="primary"
-      v-close-popup />
+      type="submit" />
   </q-card-actions>
+  </q-form>
 </q-card>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { usePlatsStore } from 'stores/store-plats'
 
-const { action } = defineProps(['action'])
+const store = usePlatsStore()
+
+const { action, platAModifier } = defineProps({
+  action: {
+    type: String
+  },
+  platAModifier: {
+    type: Object
+  }
+})
 
 const plat = ref({
   name: '',
@@ -73,6 +88,25 @@ const plat = ref({
   note: 1,
   image: ''
 })
+
+const emit = defineEmits(['close'])
+
+const formSubmit = () => {
+  if (plat.value.id) {
+    const { value: payload } = plat // destructuration de la tache
+    store.modifierPlat(plat.value.id, payload)
+  } else {
+    store.ajouterPlat(plat.value)
+  }
+  emit('close')
+}
+
+onMounted(() => {
+  if (platAModifier) {
+    Object.assign(plat.value, platAModifier)
+  }
+})
+
 </script>
 
 <style>

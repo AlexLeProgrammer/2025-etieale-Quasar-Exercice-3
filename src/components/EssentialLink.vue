@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-const {title, caption, link, icon} = defineProps({
+const { title, caption, link, icon } = defineProps({
   title: {
     type: String,
     required: true
