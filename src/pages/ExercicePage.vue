@@ -31,10 +31,12 @@ Exercice 3 - Pinia & Formulaires
     <PlatComponent
       v-for="plat in store.plats"
       :key="plat.id"
-      :plat="plat" />
+      :plat="plat"
+    />
 
     <bouton-ajouter
-      @click="afficherFormPlat = true" />
+      @click="afficherFormPlat = true"
+    />
 
     <q-dialog
       v-model="afficherFormPlat">

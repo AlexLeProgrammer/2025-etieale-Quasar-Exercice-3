@@ -11,7 +11,8 @@
     <div class="row q-mb-md">
       <q-input
         filled
-        maxlength="20"
+        :rules="[val => !!val || 'Le nom est obligatoire !',
+        val => (val.length <= 20) || 'Le nom doit comporter maximum 20 caractères !']"
         v-model="plat.nom"
         label="Nom (Burger)"
         class="col" />
@@ -20,7 +21,7 @@
     <div class="row q-mb-md">
       <q-input
         filled
-        maxlength="155"
+        :rules="[val => (val.length <= 155) || 'La description doit comporter maximum 155 caractères !']"
         v-model="plat.description"
         label="Description"
         type="textarea"
